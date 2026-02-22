@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Translit Jawa Sederhana</title>
+    <style>
+        /* BAGIAN CSS: Mengatur tampilan agar rapi dan responsif */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        p.subtitle { color: #7f8c8d; margin-bottom: 20px; font-size: 0.9em; }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            resize: none;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #4ca1af;
+            outline: none;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+        }
+
+        button.krama { background: #27ae60; }
+        button.krama:hover { background: #2ecc71; }
+
+        .result-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4ca1af;
+            text-align: left;
+            min-height: 60px;
+        }
+
+        .result-box strong { color: #2c3e50; display: block; margin-bottom: 10px; }
+        #outputText { font-size: 18px; color: #333; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Translit Jawa</h1>
+        <p class="subtitle">Kamus Indonesia - Ngoko - Krama Inggil</p>
+        
+        <div class="translator-box">
+            <textarea id="inputText" placeholder="Contoh: Saya mau pergi ke rumah..."></textarea>
+            
+            <div class="controls">
+                <button onclick="translateText('ngoko')">Ke Ngoko</button>
+                <button class="krama" onclick="translateText('krama')">Ke Krama Inggil</button>
+            </div>
+
+            <div class="result-box">
+                <strong>Hasil Terjemahan:</strong>
+                <p id="outputText">Tunggu input...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* BAGIAN JAVASCRIPT: Logika penerjemahan */
+        
+        // Data Kamus (Mapping kata per kata)
+        const dictionary = {
+            "saya": { ngoko: "aku", krama: "dalem / kulo" },
+            "kamu": { ngoko: "kowe", krama: "panjenengan" },
+            "makan": { ngoko: "mangan", krama: "dahar" },
+            "minum": { ngoko: "ngombe", krama: "ngunjuk" },
+            "pergi": { ngoko: "lungo", krama: "tindak" },
+            "rumah": { ngoko: "omah", krama: "griya" },
+            "datang": { ngoko: "teko", krama: "rawuh" },
+            "tidur": { ngoko: "turu", krama: "sare" },
+            "beli": { ngoko: "tuku", krama: "mundhut" },
+            "lihat": { ngoko: "ndelok", krama: "mirsani" },
+            "mau": { ngoko: "gelem", krama: "kersa" },
+            "ke": { ngoko: "menyang", krama: "dhateng" }
+        };
+
+        function translateText(level) {
+            const input = document.getElementById('inputText').value.toLowerCase();
+            
+            // Membersihkan tanda baca agar pencarian kata lebih akurat
+            const words = input.replace(/[.,!?;]/g, "").split(/\s+/);
+            
+            const result = words.map(word => {
+                // Jika kata ditemukan di kamus, ambil sesuai level (ngoko/krama)
+                if (dictionary[word]) {
+                    return dictionary[word][level];
+                } else {
+                    // Jika tidak ditemukan, tetap gunakan kata asli (ditandai dengan *)
+                    return word ? word : ""; 
+                }
+            });
+
+            const finalOutput = result.join(" ");
+            document.getElementById('outputText').innerText = finalOutput || "Silakan masukkan teks.";
+        }
+    </script>
+</body>
+</html>
