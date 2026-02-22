@@ -5,103 +5,306 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Translit Jawa Sederhana</title>
     <style>
-        /* BAGIAN CSS: Mengatur tampilan agar rapi dan responsif */
+        /* Modern CSS dengan animasi dan desain yang lebih menarik */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(20px) rotate(-1deg); }
         }
 
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s ease-out;
         }
 
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        p.subtitle { color: #7f8c8d; margin-bottom: 20px; font-size: 0.9em; }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .input-section {
+            margin-bottom: 25px;
+        }
 
         textarea {
             width: 100%;
-            height: 120px;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            height: 140px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
             resize: none;
             box-sizing: border-box;
             font-size: 16px;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8fafc;
         }
 
         textarea:focus {
-            border-color: #4ca1af;
+            border-color: #667eea;
             outline: none;
-        }
-
-        .controls {
-            margin: 20px 0;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        button {
-            padding: 12px 25px;
-            border: none;
-            background: #2c3e50;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s, background 0.3s;
-        }
-
-        button:hover {
-            background: #34495e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
             transform: translateY(-2px);
         }
 
-        button.krama { background: #27ae60; }
-        button.krama:hover { background: #2ecc71; }
-
-        .result-box {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #4ca1af;
-            text-align: left;
-            min-height: 60px;
+        textarea::placeholder {
+            color: #94a3b8;
         }
 
-        .result-box strong { color: #2c3e50; display: block; margin-bottom: 10px; }
-        #outputText { font-size: 18px; color: #333; margin: 0; }
+        .controls {
+            margin: 25px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            min-width: 140px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button.krama {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        button.krama:hover {
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .result-section {
+            margin-top: 30px;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            min-height: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .result-box strong {
+            color: #334155;
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #outputText {
+            font-size: 18px;
+            color: #1e293b;
+            margin: 0;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        /* Micro-interactions */
+        .translator-box {
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Translit Jawa</h1>
-        <p class="subtitle">Kamus Indonesia - Ngoko - Krama Inggil</p>
+        <div class="header">
+            <h1>Translit Jawa</h1>
+            <p class="subtitle">Kamus Indonesia - Ngoko - Krama Inggil</p>
+        </div>
         
         <div class="translator-box">
-            <textarea id="inputText" placeholder="Contoh: Saya mau pergi ke rumah..."></textarea>
+            <div class="input-section">
+                <textarea id="inputText" placeholder="Contoh: Saya mau pergi ke rumah..."></textarea>
+            </div>
             
             <div class="controls">
                 <button onclick="translateText('ngoko')">Ke Ngoko</button>
                 <button class="krama" onclick="translateText('krama')">Ke Krama Inggil</button>
             </div>
 
-            <div class="result-box">
-                <strong>Hasil Terjemahan:</strong>
-                <p id="outputText">Tunggu input...</p>
+            <div class="result-section">
+                <div class="result-box">
+                    <strong>Hasil Terjemahan:</strong>
+                    <p id="outputText">Tunggu input...</p>
+                </div>
             </div>
         </div>
     </div>
